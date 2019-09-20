@@ -99,7 +99,7 @@ module Enumerable
     array
   end
 
-  def my_inject(x = self[0])
+  def my_inject(_x = self[0])
     total = 1
     if self.class == Array
       my_each do |value|
