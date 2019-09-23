@@ -61,9 +61,7 @@ module Enumerable
 
   def my_count
     i = 0
-    while i < size
-      i += 1
-    end
+    i += 1 while i < size
     i
   end
 
@@ -118,13 +116,12 @@ module Enumerable
 end
 
 def multiply_els(array)
-	array.my_inject { |product, value| p product * value }
+  array.my_inject { |product, value| p product * value }
 end
 
-
 # TESTS
-#array = [4, 2, 1, 2, 1, 2, 7, 7, 7]
-#p array.my_all? { |x| x < 8 }
-#p array.my_any? { |x| x % 7 == 0 }
-#p array.my_none? { |x| x > 3 }
-#p array.my_count
+# array = [4, 2, 1, 2, 1, 2, 7, 7, 7]
+# p array.my_all? { |x| x < 8 }
+# p array.my_any? { |x| x % 7 == 0 }
+# p array.my_none? { |x| x > 3 }
+# p array.my_count
