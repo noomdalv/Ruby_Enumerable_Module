@@ -3,20 +3,32 @@
 module Enumerable
   def my_each
     i = 0
-    while i < size
-      yield(self[i])
-      i += 1
-    end
-    self
+	if block_given?
+    	while i < size
+      		yield(self[i])
+      		i += 1
+		end
+    else
+    	each do |x|
+			p x
+			i += 1
+		end
+	end
   end
 
   def my_each_with_index
     i = 0
-    while i < size
-      yield(self[i], i)
-      i += 1
-    end
-    self
+	if block_given?
+	    while i < size
+			i += 1
+	      	yield(self[i], i)
+	    end
+	else
+		each do |x|
+			p "index: #{i}, value: #{self[x]}"
+			i += 1
+		end
+	end
   end
 
   def my_select
@@ -29,12 +41,15 @@ module Enumerable
     new_array
   end
 
-  def my_all?
-    i = 0
-    while i < size
-      return false if yield(self[i]) == false || yield(self[i]).nil?
-
-      i += 1
+  def my_all?(arg = nil)
+    if block_given?
+      my_each { |x| return false unless yield(x) }
+    elsif arg.class == Class
+      my_each { |x| return false unless x.class == arg }
+    elsif arg.class == Regexp
+      my_each { |x| return false if (x =~ arg).nil? }
+    elsif arg.nil?
+      my_each { |x| return false unless(x) }
     end
     true
   end
@@ -43,26 +58,32 @@ module Enumerable
     i = 0
     while i < size
       return true if yield(self[i])
-
       i += 1
     end
     false
   end
 
-  def my_none?
-    i = 0
-    while i < size
-      return false if yield(self[i])
-
-      i += 1
+  def my_none?(arg = nil)
+	if block_given?
+      	my_each { |x| return true unless yield(x) }
+  	elsif arg.class == Class
+      	my_each { |x| return true unless x.class == arg }
+    elsif arg.class == Regexp
+      	my_each { |x| return true if (x =~ arg).nil? }
+    elsif arg.nil?
+      	my_each { |x| return true unless(x) }
     end
-    true
+    false
   end
 
-  def my_count
+  def my_count(arg = nil)
     i = 0
-    i += 1 while i < size
-    i
+	if block_given?
+    	i += 1 while i < size
+	else
+     my_each { |x| i += 1 }
+ 	end
+	i
   end
 
   def my_map
@@ -70,30 +91,6 @@ module Enumerable
     i = 0
     while i < size
       array << yield(self[i])
-      i += 1
-    end
-    array
-  end
-
-  def my_map_block(&block)
-    array = []
-    i = 0
-    while i < size
-      array << block.call(self[i])
-      i += 1
-    end
-    array
-  end
-
-  def my_map_proc_block(arg = nil)
-    array = []
-    i = 0
-    while i < size
-      if arg.nil? && block_given?
-        array << yield(self[i])
-      elsif !arg.nil? && block_given?
-        array << arg.call(self[i])
-      end
       i += 1
     end
     array
@@ -120,8 +117,12 @@ def multiply_els(array)
 end
 
 # TESTS
-# array = [4, 2, 1, 2, 1, 2, 7, 7, 7]
+array = [4, 2, 1, 2, 1, 2, 7, 7, 7]
+#p array.my_each_with_index
 # p array.my_all? { |x| x < 8 }
 # p array.my_any? { |x| x % 7 == 0 }
 # p array.my_none? { |x| x > 3 }
-# p array.my_count
+ary = [1, 2, 4, 2]
+ary.my_count               #=> 4
+ary.my_count(2)            #=> 2
+ary.my_count{ |x| x%2==0 } #=> 3
