@@ -3,32 +3,32 @@
 module Enumerable
   def my_each
     i = 0
-	if block_given?
-    	while i < size
-      		yield(self[i])
-      		i += 1
-		end
+    if block_given?
+      while i < size
+        yield(self[i])
+        i += 1
+      end
     else
-    	each do |x|
-			p x
-			i += 1
-		end
-	end
+      each do |x|
+        p x
+        i += 1
+      end
+    end
   end
 
   def my_each_with_index
     i = 0
-	if block_given?
-	    while i < size
-			i += 1
-	      	yield(self[i], i)
-	    end
-	else
-		each do |x|
-			p "index: #{i}, value: #{self[x]}"
-			i += 1
-		end
-	end
+    if block_given?
+      while i < size
+        yield(self[i], i)
+        i += 1
+      end
+    else
+      each do |x|
+        p "index: #{i}, value: #{self[x]}"
+        i += 1
+      end
+    end
   end
 
   def my_select
@@ -49,7 +49,7 @@ module Enumerable
     elsif arg.class == Regexp
       my_each { |x| return false if (x =~ arg).nil? }
     elsif arg.nil?
-      my_each { |x| return false unless(x) }
+      my_each { |x| return false unless x }
     end
     true
   end
@@ -58,32 +58,35 @@ module Enumerable
     i = 0
     while i < size
       return true if yield(self[i])
+
       i += 1
     end
     false
   end
 
   def my_none?(arg = nil)
-	if block_given?
-      	my_each { |x| return true unless yield(x) }
-  	elsif arg.class == Class
-      	my_each { |x| return true unless x.class == arg }
+    if block_given?
+      my_each { |x| return true unless yield(x) }
+    elsif arg.class == Class
+      my_each { |x| return true unless x.class == arg }
     elsif arg.class == Regexp
-      	my_each { |x| return true if (x =~ arg).nil? }
+      my_each { |x| return true if (x =~ arg).nil? }
     elsif arg.nil?
-      	my_each { |x| return true unless(x) }
+      my_each { |x| return true unless x }
     end
     false
   end
 
   def my_count(arg = nil)
     i = 0
-	if block_given?
-    	i += 1 while i < size
-	else
-     my_each { |x| i += 1 }
- 	end
-	i
+    if block_given?
+      my_each { |x| i += 1 if yield(x) }
+    elsif arg.nil?
+      my_each { |_x| i += 1 }
+    elsif !arg.nil?
+      my_each { |x| i += 1 if arg == x }
+    end
+    i
   end
 
   def my_map
@@ -96,33 +99,25 @@ module Enumerable
     array
   end
 
-  def my_inject(_param = self[0])
-    total = 1
-    if self.class == Array
-      my_each do |value|
-        total = yield(total, value)
-      end
-
-    elsif self.class == Hash
-      my_each do |_key, value|
-        total = yield(total, value)
-      end
+  def my_inject(accumulator = nil, symbol = nil)
+    if !accumulator.nil? && !symbol.nil?
+      my_each { |num| accumulator = accumulator.method(symbol).call(num) }
+      accumulator
+    elsif !accumulator.nil? && accumulator.is_a?(Symbol) && symbol.nil?
+      memo, *remaining_elements = self
+      remaining_elements.my_each { |num| memo = memo.method(accumulator).call(num) }
+      memo
+    elsif !accumulator.nil? && accumulator.is_a?(Integer) && symbol.nil?
+      my_each { |num| accumulator = yield(accumulator, num) }
+      accumulator
+    elsif accumulator.nil? && symbol.nil?
+      accumulator, *remaining_elements = self
+      remaining_elements.my_each { |num| accumulator = yield(accumulator, num) }
+      accumulator
     end
-    total
   end
 end
 
 def multiply_els(array)
   array.my_inject { |product, value| p product * value }
 end
-
-# TESTS
-array = [4, 2, 1, 2, 1, 2, 7, 7, 7]
-#p array.my_each_with_index
-# p array.my_all? { |x| x < 8 }
-# p array.my_any? { |x| x % 7 == 0 }
-# p array.my_none? { |x| x > 3 }
-ary = [1, 2, 4, 2]
-ary.my_count               #=> 4
-ary.my_count(2)            #=> 2
-ary.my_count{ |x| x%2==0 } #=> 3
