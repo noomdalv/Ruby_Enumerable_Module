@@ -2,7 +2,8 @@
 
 module Enumerable
   def my_each
-	return to_enum unless block_given?
+    return to_enum unless block_given?
+
     i = 0
     if block_given?
       while i < size
@@ -18,7 +19,8 @@ module Enumerable
   end
 
   def my_each_with_index
-	return to_enum unless block_given?
+    return to_enum unless block_given?
+
     i = 0
     if block_given?
       while i < size
@@ -92,7 +94,8 @@ module Enumerable
   end
 
   def my_map
-	return enum unless block_given?
+    return enum unless block_given?
+
     array = []
     i = 0
     while i < size
