@@ -66,15 +66,15 @@ module Enumerable
 
   def my_none?(arg = nil)
     if block_given?
-      my_each { |x| return true unless yield(x) }
+      my_each { |x| return false unless yield(x) }
     elsif arg.class == Class
-      my_each { |x| return true unless x.class == arg }
+      my_each { |x| return false unless x.class == arg }
     elsif arg.class == Regexp
-      my_each { |x| return true if (x =~ arg).nil? }
+      my_each { |x| return false if (x =~ arg).nil? }
     elsif arg.nil?
-      my_each { |x| return true unless x }
+      my_each { |x| return false unless x }
     end
-    false
+    true
   end
 
   def my_count(arg = nil)
