@@ -129,4 +129,4 @@ def multiply_els(array)
   array.my_inject { |product, value| p product * value }
 end
 
-p [1,2,3,4].my_none?(4)
+p [1, 2, 3, 4].my_none?(4)
