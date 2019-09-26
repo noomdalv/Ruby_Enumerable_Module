@@ -10,11 +10,6 @@ module Enumerable
         yield(self[i])
         i += 1
       end
-    else
-      each do |x|
-        p x
-        i += 1
-      end
     end
   end
 
@@ -27,15 +22,12 @@ module Enumerable
         yield(self[i], i)
         i += 1
       end
-    else
-      each do |x|
-        p "index: #{i}, value: #{self[x]}"
-        i += 1
-      end
     end
   end
 
   def my_select
+    return to_enum unless block_given?
+
     i = 0
     new_array = []
     while i < size
@@ -52,33 +44,42 @@ module Enumerable
       my_each { |x| return false unless x.class == arg }
     elsif arg.class == Regexp
       my_each { |x| return false if (x =~ arg).nil? }
+    elsif !arg.nil?
+      my_each { |x| return false unless x == arg }
     elsif arg.nil?
       my_each { |x| return false unless x }
     end
     true
   end
 
-  def my_any?
-    i = 0
-    while i < size
-      return true if yield(self[i])
-
-      i += 1
-    end
-    false
-  end
-
-  def my_none?(arg = nil)
+  def my_any?(arg = nil)
     if block_given?
       my_each { |x| return false unless yield(x) }
     elsif arg.class == Class
       my_each { |x| return false unless x.class == arg }
     elsif arg.class == Regexp
       my_each { |x| return false if (x =~ arg).nil? }
+    elsif !arg.nil?
+      my_each { |x| return false unless x == arg }
     elsif arg.nil?
       my_each { |x| return false unless x }
     end
     true
+  end
+
+  def my_none?(arg = nil)
+    if block_given?
+      my_each { |x| return true unless yield(x) }
+    elsif arg.class == Class
+      my_each { |x| return true unless x.class == arg }
+    elsif arg.class == Regexp
+      my_each { |x| return true if (x =~ arg).nil? }
+    elsif arg.nil?
+      my_each { |x| return true unless x }
+    else
+      my_each { |x| return false if x != arg }
+    end
+    false
   end
 
   def my_count(arg = nil)
@@ -94,7 +95,7 @@ module Enumerable
   end
 
   def my_map
-    return enum unless block_given?
+    return to_enum unless block_given?
 
     array = []
     i = 0
@@ -128,4 +129,4 @@ def multiply_els(array)
   array.my_inject { |product, value| p product * value }
 end
 
-p [1, 2, 3].map
+p [1,2,3,4].my_none?(4)
