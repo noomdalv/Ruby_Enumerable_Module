@@ -59,10 +59,10 @@ module Enumerable
       my_each { |x| return false unless x.class == arg }
     elsif arg.class == Regexp
       my_each { |x| return false if (x =~ arg).nil? }
-    elsif !arg.nil?
-      my_each { |x| return false unless x == arg }
     elsif arg.nil?
       my_each { |x| return false unless x }
+    else
+      my_each { |x| return true if x == arg }
     end
     true
   end
@@ -129,4 +129,6 @@ def multiply_els(array)
   array.my_inject { |product, value| p product * value }
 end
 
-p [1, 2, 3, 4].my_none?(4)
+p [1, 2, 3, 4].my_any?
+p [1, 2, 3, 4].my_any?(2)
+p [1, 2, 3, 4].my_any?(Integer)
