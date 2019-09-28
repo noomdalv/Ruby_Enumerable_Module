@@ -54,32 +54,32 @@ module Enumerable
 
   def my_any?(arg = nil)
     if block_given?
-      my_each { |x| return false unless yield(x) }
+      my_each { |x| return true if yield(x) }
     elsif arg.class == Class
-      my_each { |x| return false unless x.class == arg }
+      my_each { |x| return true if x.class == arg }
     elsif arg.class == Regexp
-      my_each { |x| return false if (x =~ arg).nil? }
+      my_each { |x| return true if x =~ arg }
     elsif arg.nil?
-      my_each { |x| return false unless x }
+      my_each { |x| return true if x }
     else
       my_each { |x| return true if x == arg }
     end
-    true
+    false
   end
 
   def my_none?(arg = nil)
     if block_given?
-      my_each { |x| return true unless yield(x) }
+      my_each { |x| return false if yield(x) }
     elsif arg.class == Class
-      my_each { |x| return true unless x.class == arg }
+      my_each { |x| return false if x.class == arg }
     elsif arg.class == Regexp
-      my_each { |x| return true if (x =~ arg).nil? }
+      my_each { |x| return false if x =~ arg }
     elsif arg.nil?
-      my_each { |x| return true unless x }
+      my_each { |x| return false if x }
     else
-      my_each { |x| return false if x != arg }
+      my_each { |x| return false if x == arg }
     end
-    false
+    true
   end
 
   def my_count(arg = nil)
@@ -115,20 +115,20 @@ module Enumerable
       remaining_elements.my_each { |num| memo = memo.method(accumulator).call(num) }
       memo
     elsif !accumulator.nil? && accumulator.is_a?(Integer) && symbol.nil?
-      my_each { |num| accumulator = yield(accumulator, num) }
+      array = to_a
+      array.my_each { |num| accumulator = yield(accumulator, num) }
       accumulator
     elsif accumulator.nil? && symbol.nil?
-      accumulator, *remaining_elements = self
-      remaining_elements.my_each { |num| accumulator = yield(accumulator, num) }
-      accumulator
+      array = to_a
+      accumulator = array.shift
+      array.my_each do |num|
+        accumulator = yield(accumulator, num)
+      end
     end
+    accumulator
   end
 end
 
 def multiply_els(array)
   array.my_inject { |product, value| p product * value }
 end
-
-p [1, 2, 3, 4].my_any?
-p [1, 2, 3, 4].my_any?(2)
-p [1, 2, 3, 4].my_any?(Integer)
