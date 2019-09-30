@@ -1,0 +1,63 @@
+#my_each
+#my_each_with_index
+#my_select
+#my_all?
+#my_any?
+#my_none?
+#my_count
+#my_map
+#my_inject
+--------------------------------------------------------------------------------
+1st review
+
+#my_all?				*should be able to a parameter so for example array.my_all?(4)
+#my_any?				*my_any? should be able to a parameter so for example array.my_any?(4)
+#my_none?				*my_none? should be able to a parameter so for example array.my_none?(String)
+#my_count				*My count is not working as expected
+--------------------------------------------------------------------------------
+2nd review
+
+#my_each				*must return an Enumerator if no block is given.
+#my_each_with_index		*must return an Enumerator if no block is given.
+#my_all?				*it`s giving an error when a block is passed
+#my_none?				*it`s also giving an error when a block is passed.
+#my_count				*should behave like the original
+#my_map					*Should return an Enumerator if no block is given.
+#my_inject				*Should behave like the original
+--------------------------------------------------------------------------------
+3rd review
+
+#my_none?				*Sorry there is a bug here
+--------------------------------------------------------------------------------
+4th review
+
+#my_each				*must return an Enumerator if no block is given.
+#my_each_with_index		*must return an Enumerator if no block is given.
+#my_map					*should return an Enumerator if no block is given.
+--------------------------------------------------------------------------------
+5th review
+
+#my_each				*remove print statement
+#my_each_with_index		*remove print statement
+#my_select				*let's handle cases when no block is given
+#my_none?				*is not working as expected
+#my_map					*add one more value
+--------------------------------------------------------------------------------
+6th review
+
+#my_any?				*Your my_any does not quite work as should.
+#my_none?				*my_none is simply opposite of my_any
+#my_inject				*does not quite work as should with block and symbol
+--------------------------------------------------------------------------------
+7th review
+
+#my_inject				*there are just two failing test that should be looked out
+
+#my_inject combines all elements of enum by applying a binary operation, specified by a block
+#my_inject, when a symbol is specified, combines each element of the collection by applying the symbol as a named method.
+--------------------------------------------------------------------------------
+8th review
+
+#my_inject				*I tried this against your my inject method and they produce different results.
+						array.my_inject { |p,e| p + e } == array.inject { |p,e| p + e }
+						array.my_inject(:+) == array.inject(:+)
