@@ -55,3 +55,9 @@
 
 #my_inject combines all elements of enum by applying a binary operation, specified by a block
 #my_inject, when a symbol is specified, combines each element of the collection by applying the symbol as a named method.
+--------------------------------------------------------------------------------
+8th review
+
+#my_inject				*I tried this against your my inject method and they produce different results.
+						array.my_inject { |p,e| p + e } == array.inject { |p,e| p + e }
+						array.my_inject(:+) == array.inject(:+)

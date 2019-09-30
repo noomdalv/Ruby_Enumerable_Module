@@ -107,22 +107,21 @@ module Enumerable
   end
 
   def my_inject(accumulator = nil, symbol = nil)
-    array = to_a
     if !accumulator.nil? && !symbol.nil?
       array.my_each { |num| accumulator = accumulator.method(symbol).call(num) }
       accumulator
     elsif !accumulator.nil? && accumulator.is_a?(Symbol) && symbol.nil?
-      memo = array.shift
-      array.my_each { |num| memo = memo.method(accumulator).call(num) }
+      new_arr = clone.to_a
+      memo = new_arr.shift
+      new_arr.my_each { |num| memo = memo.method(accumulator).call(num) }
       memo
     elsif !accumulator.nil? && accumulator.is_a?(Integer) && symbol.nil?
       array.my_each { |num| accumulator = yield(accumulator, num) }
       accumulator
     elsif accumulator.nil? && symbol.nil?
-      accumulator = array.shift
-      array.my_each do |num|
-        accumulator = yield(accumulator, num)
-      end
+      new_arr = clone.to_a
+      accumulator = new_arr.shift
+      new_arr.my_each { |num| accumulator = yield(accumulator, num) }
       accumulator
     end
   end
@@ -133,34 +132,14 @@ def multiply_els(array)
 end
 
 # TEST CASES INJECT - MY_INJECT
-#
+# array = [1, 2, 3, 4, 5]
 # p '-----------------------INJECT-------------------------'
-# Sum some numbers
-# p (5..10).inject(:+) #=> 45
-# Same using a block and inject
-# p (5..10).inject { |sum, n| sum + n } #=> 45
-# Multiply some numbers
-# p (5..10).inject(1, :*) #=> 151200
-# Same using a block
-# p (5..10).inject(1) { |product, n| product * n } #=> 151200
-# find the longest word
-# longest = %w[cat sheep bear].inject do |memo, word|
-#   memo.length > word.length ? memo : word
-# end
-# p longest #=> "sheep"
+# p array.inject { |p, e| p + e }
+# p array.inject(:+)
 #
-# p '-----------------------MY_INJECT-------------------------'
-# Sum some numbers
-# p (5..10).my_inject(:+) #=> 45
-# Same using a block and inject
-# p (5..10).my_inject { |sum, n| sum + n } #=> 45
-# Multiply some numbers
-# p (5..10).my_inject(1, :*) #=> 151200
-# Same using a block
-# p (5..10).my_inject(1) { |product, n| product * n } #=> 151200
-# find the longest word
-# longest = %w[cat sheep bear].my_inject do |memo, word|
-#   memo.length > word.length ? memo : word
-# end
-# p longest #=> "sheep"
+# p '-----------------------MY_INJECT-----------------------'
+# p array.my_inject { |p, e| p + e }
+# p array.my_inject(:+)
 #
+# p array.inject { |p, e| p + e } == array.my_inject { |p, e| p + e }
+# p array.inject(:+) == array.my_inject(:+)
