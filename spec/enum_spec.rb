@@ -8,7 +8,7 @@ RSpec.describe Enumerable do
 	let(:numbers) { [1, 3, 5, 8, 9] }
 
   describe '#my_each' do
-    it 'Returns enumerator if block_given is false' do
+    it 'Returns enumerator if block_given? is false' do
 			array = [1, 2, 3]
       expect(array.my_each).to be_an(Enumerator)
 		end
@@ -25,7 +25,7 @@ RSpec.describe Enumerable do
   end
 
 	describe '#my_each_with_index' do
-    it 'Returns enumerator if block_given is false' do
+    it 'Returns enumerator if block_given? is false' do
 			array = [1, 2, 3]
       expect(array.my_each_with_index).to be_an(Enumerator)
 		end
@@ -37,6 +37,17 @@ RSpec.describe Enumerable do
       numbers.each { |element, index| each_with_index_array << index }
 			expect(my_each_with_index_array).to eql(each_with_index_array)
 		end
-
 	end
+
+	describe '#my_select' do
+		it 'Returns array with all elements for which the given block returns true' do
+			expect(numbers.my_select { |n| n > 3 }).to eql([5, 8, 9])
+		end
+
+		it 'Returns enumerator if no block is given' do
+			array = [1, 2, 3]
+      expect(array.my_select).to be_an(Enumerator)
+		end
+	end
+
 end
