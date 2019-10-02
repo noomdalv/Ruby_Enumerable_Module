@@ -6,7 +6,6 @@ Microverse
 
 This is the second project of the Ruby Curriculum at [Microverse](https://www.microverse.org/) - @microverseinc
 * The goal was to build from zero the Enumerable Ruby Module methods.
-* RSpec was used for testing the methods with Test Driven Development approach.
 
 #### [Assignment link](https://www.theodinproject.com/courses/ruby-programming/lessons/advanced-building-blocks#project-2-enumerable-methods)
 
