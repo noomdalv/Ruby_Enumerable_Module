@@ -153,12 +153,12 @@ RSpec.describe Enumerable do
   end
 
   describe '#my_inject' do
-    context 'Block is passed as argument'
+    context 'A Block is passed as argument'
     it 'Returns an accumulator by combining all elements and passing a block(operator)' do
       expect(numbers.my_inject(&sum)).to eql(28)
     end
 
-    context 'Symbol is passed as argument'
+    context 'A Symbol is passed as argument'
     it 'Returns an accumulator by combining all elements and passing a symbol(operator)' do
       expect(numbers.my_inject(:+)).to eql(28)
     end
