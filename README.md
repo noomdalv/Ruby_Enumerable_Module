@@ -1,16 +1,29 @@
-# Ruby_Enumerable_Module
+# Project: Ruby Enumerable Methods
 
-# Project 2: Enumerable Methods
-
-Microverse
+<b>Microverse</b>
 
 This is the second project of the Ruby Curriculum at [Microverse](https://www.microverse.org/) - @microverseinc
 * The goal was to build from zero the Enumerable Ruby Module methods.
-* RSPec was used for Test Driven Development implementation.
+* RSpec was used for Test Driven Development implementation.
 
-#### [Assignment link](https://www.theodinproject.com/courses/ruby-programming/lessons/advanced-building-blocks#project-2-enumerable-methods)
+## [Assignment link](https://www.theodinproject.com/courses/ruby-programming/lessons/advanced-building-blocks#project-2-enumerable-methods)
 
+## Download
 
-#### Authors
+To get a local copy up and running go to the location you'd like to add the project and then:
 
-* [@noomdalv](https://github.com/noomdalv/)
+```console
+git clone https://github.com/noomdalv/Ruby_Enumerable_Module.git
+```
+
+```console
+cd Ruby_Enumerable_Module
+```
+
+### 👤 Author
+
+- Github: [@noomdalv](https://github.com/noomdalv/)
+
+#### License
+
+This project is 📝 [MIT](https://opensource.org/licenses/MIT) licensed.
