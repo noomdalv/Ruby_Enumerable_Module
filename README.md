@@ -20,10 +20,11 @@ git clone https://github.com/noomdalv/Ruby_Enumerable_Module.git
 cd Ruby_Enumerable_Module
 ```
 
-### 👤 Author
+## 👤 Author
 
-- Github: [@noomdalv](https://github.com/noomdalv/)
+- Github: [@noomdalv](https://github.com/noomdalv/)<br />
+  Email: vladlunasan@gmail.com
 
-#### License
+### License
 
 This project is 📝 [MIT](https://opensource.org/licenses/MIT) licensed.
